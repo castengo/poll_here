@@ -28,7 +28,6 @@ defmodule PollHere.Store do
 
   def handle_call({:add_answer, new_answer}, _from, %{answers: answers}=state) do
     new_state = %{state | answers: [new_answer | answers]}
-    # broadcast(state)
     {:reply, new_state, new_state}
   end
 
