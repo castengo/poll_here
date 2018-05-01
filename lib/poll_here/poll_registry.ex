@@ -23,7 +23,9 @@ defmodule PollHere.PollRegistry do
     GenServer.call __MODULE__, {:find, name}
   end
 
+  ###############
   ## CALLBACKS ##
+  ###############
 
   @impl true
   def init(_) do

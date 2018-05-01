@@ -16,4 +16,15 @@ defmodule PollHereWeb.PageController do
         |> redirect(to: page_path(conn, :index))
     end
   end
+
+  def join(conn, %{"poll_name" => poll_name}) do
+    case PollRegistry.find(poll_name) do
+      nil ->
+        conn
+        |> put_flash(:error, "There are no polls with that name")
+        |> redirect(to: page_path(conn, :index))
+      _pid ->
+        render conn, "attendee.html", %{name: poll_name}
+    end
+  end
 end

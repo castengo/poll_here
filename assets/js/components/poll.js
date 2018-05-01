@@ -5,7 +5,7 @@ class Poll extends React.Component {
   constructor(props) {
     super(props)
 
-    this.sendMessage = this.sendMessage.bind(this)
+    this.submitMessage = this.submitMessage.bind(this)
     this.updateMessage = this.updateMessage.bind(this)
     this.state = {
       answers: [],
@@ -36,14 +36,14 @@ class Poll extends React.Component {
   render() {
     return (
       <div>
-        <form onSubmit={ this.sendMessage }>
+        <form onSubmit={ this.submitMessage }>
           <input
             onChange={ this.updateMessage }
             value={ this.state.newAnswer }
             type='text' />
           <button
             className='btn'
-            onClick={ this.sendMessage }
+            onClick={ this.submitMessage }
             type='submit'>
             Send
           </button>
@@ -58,7 +58,7 @@ class Poll extends React.Component {
     )
   }
 
-  sendMessage(event) {
+  submitMessage(event) {
     event.preventDefault()
     channel.push('new_answer', this.state.newAnswer)
     this.setState({newAnswer: ''})

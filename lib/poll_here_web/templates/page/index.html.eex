@@ -11,7 +11,7 @@
 
 <div>
   <h2>Join a Poll</h2>
-  <%= form_for @conn, page_path(@conn, :join), fn f -> %>
+  <%= form_for @conn, page_path(@conn, :join), [method: "get"], fn f -> %>
     <%= text_input f, :poll_name %>
     <%= submit "Join" %>
   <% end %>

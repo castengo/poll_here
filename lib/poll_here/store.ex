@@ -1,4 +1,7 @@
 defmodule PollHere.Store do
+  @moduledoc """
+  Stores data for a poll.
+  """
   use Agent
 
   def start_link() do
@@ -20,11 +23,10 @@ defmodule PollHere.Store do
 
   @spec new_question(pid, String.t) :: map
   def new_question(poll, new_question) do
-    Agent.get_and_update poll, fn state ->
-      new_state = %{state | question: new_question}
+    Agent.get_and_update poll, fn _state ->
+      new_state = %{answers: [], question: new_question}
       {new_state, new_state}
     end
-    |> IO.inspect
   end
 
 end
