@@ -12,7 +12,7 @@ defmodule PollHere.Application do
       supervisor(PollHereWeb.Endpoint, []),
       # Start your own worker by calling: PollHere.Worker.start_link(arg1, arg2, arg3)
       # worker(PollHere.Worker, [arg1, arg2, arg3]),
-      worker(PollHere.Store, [])
+      worker(PollHere.PollRegistry, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
