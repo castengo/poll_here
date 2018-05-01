@@ -14,9 +14,4 @@ defmodule PollHereWeb.PollChannel do
   def handle_in("get", _nada, socket) do
     {:reply, {:ok, Store.get()}, socket}
   end
-
-  # def handle_in("new_state", state, socket) do
-  #   push socket, "new_state", state
-  #   {:noreply, socket}
-  # end
 end

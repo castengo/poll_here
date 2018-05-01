@@ -1,45 +1,34 @@
 defmodule PollHere.Store do
-  use GenServer
-  require Logger
+  use Agent
 
   def start_link() do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
+    Agent.start_link(fn -> %{answers: [], question: ""} end, name: __MODULE__)
   end
 
-  def add_answer(answer) do
-    GenServer.call(__MODULE__, {:add_answer, answer})
+  @spec add_answer(String.t) :: map
+  def add_answer(new_answer) do
+    Agent.get_and_update(__MODULE__, fn %{answers: answers}=state ->
+      new_state = %{state | answers: [new_answer | answers]}
+      {new_state, new_state}
+    end)
   end
 
-  def new_question(question) do
-    GenServer.call(__MODULE__, {:new_question, question})
-  end
-
+  @spec get() :: map()
   def get() do
-    GenServer.call(__MODULE__, :get)
+    Agent.get(__MODULE__, fn state -> state end)
   end
 
-  ## CALLBACKS ##
-
-  def init(_) do
-    Logger.info "started poll here store"
-    {:ok, %{answers: [], question: ""}}
+  @spec new_question(String.t) :: :ok
+  def new_question(new_question) do
+    Agent.get_and_update(__MODULE__, fn state ->
+      new_state = %{state | question: new_question}
+      {new_state, new_state}
+    end)
+    |> broadcast!
   end
 
-
-  def handle_call({:add_answer, new_answer}, _from, %{answers: answers}=state) do
-    new_state = %{state | answers: [new_answer | answers]}
-    {:reply, new_state, new_state}
-  end
-
-  def handle_call({:new_question, question}, _from, _state) do
-    state = %{answers: [], question: question}
-    broadcast(state)
-    {:reply, state, state}
-  end
-
-  def handle_call(:get, _from, state), do: {:reply, state, state}
-
-  defp broadcast(state) do
+  defp broadcast!(state) do
     PollHereWeb.Endpoint.broadcast! "poll:all", "new_state", state
   end
+
 end
