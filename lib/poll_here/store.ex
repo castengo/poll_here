@@ -2,15 +2,15 @@ defmodule PollHere.Store do
   use Agent
 
   def start_link() do
-    Agent.start_link(fn -> %{answers: [], question: ""} end)
+    Agent.start_link fn -> %{answers: [], question: ""} end
   end
 
   @spec add_answer(pid, String.t) :: map
   def add_answer(poll, new_answer) do
-    Agent.get_and_update(poll, fn %{answers: answers}=state ->
+    Agent.get_and_update poll, fn %{answers: answers}=state ->
       new_state = %{state | answers: [new_answer | answers]}
       {new_state, new_state}
-    end)
+    end
   end
 
   @spec get(pid) :: map
@@ -18,17 +18,13 @@ defmodule PollHere.Store do
     Agent.get(poll, fn state -> state end)
   end
 
-  @spec new_question(pid, String.t) :: :ok
+  @spec new_question(pid, String.t) :: map
   def new_question(poll, new_question) do
-    Agent.get_and_update(poll, fn state ->
+    Agent.get_and_update poll, fn state ->
       new_state = %{state | question: new_question}
       {new_state, new_state}
-    end)
-    |> broadcast!
-  end
-
-  defp broadcast!(state) do
-    PollHereWeb.Endpoint.broadcast! "poll:all", "new_state", state
+    end
+    |> IO.inspect
   end
 
 end

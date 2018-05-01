@@ -1,0 +1,6 @@
+<script>window.poll = "<%= @name %>";</script>
+
+<h1><%= "#{@name} Poll" %></h1>
+<p>See your questions and answers below!</p>
+
+<div id="presenter"></div>

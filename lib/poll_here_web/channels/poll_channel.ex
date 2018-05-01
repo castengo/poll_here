@@ -4,7 +4,7 @@ defmodule PollHereWeb.PollChannel do
   alias PollHere.Store
 
   def join("poll:" <> poll_name, _auth_message, socket) do
-    case PollRegistry.find_poll(poll_name) do
+    case PollRegistry.find(poll_name) do
       nil ->
         {:error, "There's no poll with that name"}
       store_pid ->
@@ -20,4 +20,10 @@ defmodule PollHereWeb.PollChannel do
   def handle_in("get", _nada, %{assigns: %{poll: poll}}=socket) do
     {:reply, {:ok, Store.get(poll)}, socket}
   end
+
+  def handle_in("new_question", question, %{assigns: %{poll: poll}}=socket) do
+    broadcast! socket, "new_state", Store.new_question(poll, question)
+    {:noreply, socket}
+  end
+
 end

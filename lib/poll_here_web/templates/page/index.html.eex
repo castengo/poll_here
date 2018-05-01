@@ -1,1 +1,18 @@
-<div id="poll"></div>
+<h1>Welcome to Poll Here!</h1>
+<p>Create a new poll or join a current one by using the forms below</p>
+
+<div>
+  <h2>Create a Poll</h2>
+  <%= form_for @conn, page_path(@conn, :create), fn f -> %>
+    <%= text_input f, :poll_name %>
+    <%= submit "Create" %>
+  <% end %>
+</div>
+
+<div>
+  <h2>Join a Poll</h2>
+  <%= form_for @conn, page_path(@conn, :join), fn f -> %>
+    <%= text_input f, :poll_name %>
+    <%= submit "Join" %>
+  <% end %>
+</div>

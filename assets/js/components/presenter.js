@@ -1,15 +1,15 @@
 import React from 'react'
 import channel from '../socket'
 
-class Poll extends React.Component {
+class Presenter extends React.Component {
   constructor(props) {
     super(props)
 
-    this.sendMessage = this.sendMessage.bind(this)
-    this.updateMessage = this.updateMessage.bind(this)
+    this.submitQuestion = this.submitQuestion.bind(this)
+    this.updateQuestion = this.updateQuestion.bind(this)
     this.state = {
       answers: [],
-      newAnswer: '',
+      newQuestion: '',
       question: ''
     }
   }
@@ -34,18 +34,19 @@ class Poll extends React.Component {
   }
 
   render() {
+    console.log(this.state.question)
     return (
       <div>
-        <form onSubmit={ this.sendMessage }>
+        <form onSubmit={ this.submitQuestion }>
           <input
-            onChange={ this.updateMessage }
-            value={ this.state.newAnswer }
+            onChange={ this.updateQuestion }
+            value={ this.state.newQuestion }
             type='text' />
           <button
             className='btn'
-            onClick={ this.sendMessage }
+            onClick={ this.submitQuestion }
             type='submit'>
-            Send
+            Submit
           </button>
         </form>
         <h1>{ this.state.question }</h1>
@@ -58,15 +59,15 @@ class Poll extends React.Component {
     )
   }
 
-  sendMessage(event) {
+  submitQuestion(event) {
     event.preventDefault()
-    channel.push('new_answer', this.state.newAnswer)
-    this.setState({newAnswer: ''})
+    channel.push('new_question', this.state.newQuestion)
+    this.setState({newQuestion: ''})
   }
 
-  updateMessage(event) {
-    this.setState({newAnswer: event.target.value})
+  updateQuestion(event) {
+    this.setState({newQuestion: event.target.value})
   }
 }
 
-export default Poll
+export default Presenter

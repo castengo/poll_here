@@ -21,8 +21,22 @@ import 'phoenix_html'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Poll from './components/poll'
+import Presenter from './components/presenter'
 
-ReactDOM.render(
-  <Poll/>,
-  document.getElementById("poll")
-)
+let poll = document.getElementById("poll")
+
+if (poll != undefined) {
+  ReactDOM.render(
+    <Poll/>,
+    document.getElementById("poll")
+  )
+}
+
+let presenter = document.getElementById("presenter")
+
+if (presenter != undefined) {
+  ReactDOM.render(
+    <Presenter/>,
+    document.getElementById("presenter")
+  )
+}

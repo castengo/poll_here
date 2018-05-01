@@ -16,11 +16,8 @@ defmodule PollHereWeb.Router do
   scope "/", PollHereWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    resources "/", PageController, only: [:index, :create]
+    get "/join", PageController, :join
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PollHereWeb do
-  #   pipe_through :api
-  # end
 end
